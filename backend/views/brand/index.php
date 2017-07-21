@@ -15,7 +15,7 @@
         <td><?=$model->id?></td>
         <td><?=$model->name?></td>
         <td><?=$model->intro?></td>
-        <td><?=\yii\bootstrap\Html::img($model->logo?$model->logo:'/upload/11.jpg',['height'=>50])?></td>
+        <td><?=\yii\bootstrap\Html::img($model->logo,['height'=>50])?></td>
         <td><?=$model->sort?></td>
         <td><?=\backend\models\Brand::getstatusOption($model->status)?></td>
         <td><?=\yii\bootstrap\Html::a('删除',['brand/delete','id'=>$model->id],['class'=>'btn btn-danger'])?>
@@ -23,4 +23,4 @@
     </tr>
     <?php endforeach;?>
 </table>
-
+<?=\yii\widgets\LinkPager::widget(['pagination'=>$pager])?>

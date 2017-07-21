@@ -67,7 +67,6 @@ class Brand extends \yii\db\ActiveRecord
     }
 
     public static function getstatusOption($i){
-
         $model=[
             -1=>'删除',0=>'隐藏',1=>'正常'
         ];

@@ -1,19 +1,20 @@
 <?php
 use yii\web\JsExpression;
-$form=\yii\bootstrap\ActiveForm::begin();
-echo  $form->field($model,'name');
-echo  $form->field($model,'intro')->textarea();
-//echo  $form->field($model,'imgFile')->fileInput();
-echo  $form->field($model,'logo')->hiddenInput();
 
-//Remove Events Auto Convert
-
+$form = \yii\bootstrap\ActiveForm::begin();
+//name	varchar(50)	名称
+echo $form->field($model,'name');
+//intro	text	简介
+echo $form->field($model,'intro')->textarea();
+//logo	varchar(255)	LOGO图片
+//echo $form->field($model,'imgFile')->fileInput();
+echo $form->field($model,'logo')->hiddenInput();
 
 
 //外部TAG
 echo \yii\bootstrap\Html::fileInput('test', NULL, ['id' => 'test']);
 echo \flyok666\uploadifive\Uploadifive::widget([
-    'url' => yii\helpers\Url::to(['s-upload']),
+    'url' => yii\helpers\Url::to(['brand/s-upload']),
     'id' => 'test',
     'csrf' => true,
     'renderTag' => false,
@@ -30,10 +31,15 @@ EOF
         'onUploadComplete' => new JsExpression(<<<EOF
 function(file, data, response) {
     data = JSON.parse(data);
+    //console.log(data);
     if (data.error) {
         console.log(data.msg);
     } else {
         console.log(data.fileUrl);
+        //将图片的地址赋值给logo字段
+        $("#brand-logo").val(data.fileUrl);
+        //将上传成功的图片回显
+        $("#img").attr('src',data.fileUrl);
     }
 }
 EOF
@@ -41,10 +47,10 @@ EOF
     ]
 ]);
 
-
-
-
-echo  $form->field($model,'sort')->fileInput(['type'=>'number']);
-echo  $form->field($model,'status',['inline'=>true])->radioList(\backend\models\Brand::getstatusOptions());
-echo \yii\bootstrap\Html::submitButton('确定',['class'=>'btn btn-info']);
+echo \yii\bootstrap\Html::img($model->logo?$model->logo:false,['id'=>'img','height'=>50]);
+//sort	int(11)	排序
+echo $form->field($model,'sort')->textInput(['type'=>'number']);
+//status	int(2)	状态(-1删除 0隐藏 1正常)
+echo $form->field($model,'status',['inline'=>true])->radioList(\backend\models\Brand::getStatusOptions());
+echo \yii\bootstrap\Html::submitButton('提交',['class'=>'btn btn-info']);
 \yii\bootstrap\ActiveForm::end();

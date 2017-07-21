@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "e17d58bd6999db2f7c10fdd521fca12d",
+    "content-hash": "e17b324c50b002f9c157e535cf064385",
     "packages": [
         {
             "name": "bower-asset/bootstrap",
@@ -262,6 +262,46 @@
             "time": "2016-09-14T20:40:20+00:00"
         },
         {
+            "name": "creocoder/yii2-nested-sets",
+            "version": "0.9.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/creocoder/yii2-nested-sets.git",
+                "reference": "cb8635a459b6246e5a144f096b992dcc30cf9954"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://files.phpcomposer.com/files/creocoder/yii2-nested-sets/cb8635a459b6246e5a144f096b992dcc30cf9954.zip",
+                "reference": "cb8635a459b6246e5a144f096b992dcc30cf9954",
+                "shasum": ""
+            },
+            "require": {
+                "yiisoft/yii2": "*"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "creocoder\\nestedsets\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Alexander Kochetov",
+                    "email": "creocoder@gmail.com"
+                }
+            ],
+            "description": "The nested sets behavior for the Yii framework",
+            "keywords": [
+                "nested sets",
+                "yii2"
+            ],
+            "time": "2015-01-27T10:53:51+00:00"
+        },
+        {
             "name": "ezyang/htmlpurifier",
             "version": "v4.8.0",
             "source": {
@@ -304,6 +344,44 @@
                 "html"
             ],
             "time": "2016-07-16T12:58:58+00:00"
+        },
+        {
+            "name": "flyok666/yii2-qiniu",
+            "version": "1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/flyok666/yii2-qiniu.git",
+                "reference": "c3d4b794570f159395bb59102482b68b57f44b45"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://files.phpcomposer.com/files/flyok666/yii2-qiniu/c3d4b794570f159395bb59102482b68b57f44b45.zip",
+                "reference": "c3d4b794570f159395bb59102482b68b57f44b45",
+                "shasum": ""
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "flyok666\\qiniu\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "flyok666",
+                    "email": "flyok666@qq.com"
+                }
+            ],
+            "description": "yii2上传到七牛云存储",
+            "keywords": [
+                "qiniu",
+                "upload",
+                "yii"
+            ],
+            "time": "2017-07-18T14:48:14+00:00"
         },
         {
             "name": "flyok666/yii2-uploadifive",

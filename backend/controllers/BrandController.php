@@ -108,21 +108,18 @@ class BrandController extends \yii\web\Controller
     //测试七牛云文件上传
     public function actionQiniu()
     {
-        $config = [
-            'accessKey'=>'HLYqMA59-eHKCuQVl8ZIgLJLldTqZOWasShXC8fl',
-            'secretKey'=>'i87T1FCGqv0P5Kvt-OmkfQiP-H3sfGJRDrVDg-wv',
-            'domain'=>'http://otece8y8n.bkt.clouddn.com/',
-            'bucket'=>'yii2shop',
-            'area'=>Qiniu::AREA_HUADONG
-        ];
-        $qiniu = new Qiniu($config);
-        $key = 'upload/2e/79/2e795418fcb72341d801d1fa70ca6fabc33444cb.png';
-        //将图片上传到七牛云
-        $qiniu->uploadFile(
-            \Yii::getAlias('@webroot').'/upload/2e/79/2e795418fcb72341d801d1fa70ca6fabc33444cb.png',
-            $key);
-        //获取该图片在七牛云的地址
-        $url = $qiniu->getLink($key);
-        var_dump($url);
+    $config = [
+        'accessKey'=>'HLYqMA59-eHKCuQVl8ZIgLJLldTqZOWasShXC8fl',
+        'secretKey'=>'i87T1FCGqv0P5Kvt-OmkfQiP-H3sfGJRDrVDg-wv',
+        'domain'=>'http://otece8y8n.bkt.clouddn.com/',
+        'bucket'=>'yii2shop',
+        'area'=>Qiniu::AREA_HUADONG
+    ];
+
+
+    $qiniu = new Qiniu($config);
+    $key = time();
+    $qiniu->uploadFile($_FILES['tmp_name'],$key);
+    $url = $qiniu->getLink($key);
     }
 }
