@@ -57,12 +57,6 @@ class Manage extends \yii\db\ActiveRecord
     //获取分类
     public static function getManagOptions()
     {
-        /*$categories = Category::find()->all();
-        $items = [];
-        foreach ($categories as $category){
-            $items[$category->id]=$category->name;
-        }9
-        return $items;*/
         return ArrayHelper::map(Article::find()->all(),'id','name');
     }
 

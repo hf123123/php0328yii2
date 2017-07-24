@@ -3,7 +3,6 @@
 namespace backend\models;
 
 use Yii;
-use creocoder\nestedsets\NestedSetsBehavior;
 
 /**
  * This is the model class for table "goods_category".
@@ -17,7 +16,10 @@ use creocoder\nestedsets\NestedSetsBehavior;
  * @property integer $parent_id
  * @property string $intro
  */
-class GoodsCategory extends \yii\db\ActiveRecord
+use creocoder\nestedsets\NestedSetsBehavior;
+use yii\db\ActiveRecord;
+
+class GoodsCategory extends ActiveRecord
 {
     /**
      * @inheritdoc
@@ -36,7 +38,7 @@ class GoodsCategory extends \yii\db\ActiveRecord
             [['name','parent_id'],'required'],
             [['tree', 'lft', 'rgt', 'depth', 'parent_id'], 'integer'],
             [['intro'], 'string'],
-            [['name'], 'string', 'max' => 255],
+            [['name'], 'string', 'max' => 50],
         ];
     }
 
@@ -47,22 +49,24 @@ class GoodsCategory extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'tree' => '树id',
-            'lft' => '左值',
-            'rgt' => '右值',
-            'depth' => '层级',
+            'tree' => 'Tree',
+            'lft' => 'Lft',
+            'rgt' => 'Rgt',
+            'depth' => 'Depth',
             'name' => '名称',
-            'parent_id' => '上级分类ID',
+            'parent_id' => '上级分类id',
             'intro' => '简介',
         ];
     }
-//嵌套集合
+
+
+    //嵌套集合行为
     public function behaviors() {
         return [
             'tree' => [
                 'class' => NestedSetsBehavior::className(),
-                 'treeAttribute' => 'tree',
-                 'leftAttribute' => 'lft',
+                'treeAttribute' => 'tree',
+                'leftAttribute' => 'lft',
                 'rightAttribute' => 'rgt',
                 'depthAttribute' => 'depth',
             ],

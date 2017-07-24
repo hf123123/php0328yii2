@@ -12,15 +12,37 @@ class GoodsCategoryController extends \yii\web\Controller
         $models=GoodsCategory::find()->all();
         return $this->render('index',['models'=>$models]);
     }
-    public function actionDelete($id)
-    {
-        //根据id找到要删除的数据
-        $model = GoodsCategory::findOne(['id'=>$id]);
-        //执行删除
-        $model->delete();
-        //跳转到列表页面
-        return $this->redirect(['goods/index']);
-    }
+    //删除商品分类
+ /*public function actionDel($id)
+ {
+     $model = GoodsCategory::findOne(['id' => $id]);
+     if ($model == null) {
+         throw new NotFoundHttpException('商品分类不存在');
+     }
+     if (!$model->isLeaf()) {//判断是否是叶子节点，非叶子节点说明有子分类
+         throw new ForbiddenHttpException('该分类下有子分类，无法删除');
+     }
+     $model->delete();
+     \Yii::$app->session->setFlash('success', '删除成功');
+     return $this->redirect(['index']);
+ }*/
+    public function actionDel($id){
+        $model=GoodsCategory::findOne(['id'=>$id]);
+
+//        var_dump($model->lft);exit;
+        $lft=$model->lft;
+        $rgt=$model->rgt;
+
+        if($lft + 1 != $rgt){
+
+
+            \Yii::$app->session->setFlash('danger','该分类下含有子目录，不能被删除');
+            return $this->redirect(['index']);
+        }else{
+            $model->delete();
+            \Yii::$app->session->setFlash('success','删除成功');
+            return $this->redirect(['index']);
+        }}
 
   /* /* //添加
     public function actionAdd2(){
