@@ -1,25 +1,25 @@
 <?php
-use xj\uploadify\Uploadify;
+use flyok666\uploadifive\Uploadifive;
 use yii\bootstrap\Html;
 use yii\web\JsExpression;
 
 echo Html::fileInput('test', NULL, ['id' => 'test']);
-echo Uploadify::widget([
+echo Uploadifive::widget([
     'url' => yii\helpers\Url::to(['s-upload']),
     'id' => 'test',
     'csrf' => true,
     'renderTag' => false,
     'jsOptions' => [
         'formData'=>['goods_id'=>$goods->id],//上传文件的同时传参goods_id
-        'width' => 120,
-        'height' => 40,
-        'onUploadError' => new JsExpression(<<<EOF
+        'width' => 80,
+        'height' => 30,
+        'onError' => new JsExpression(<<<EOF
 function(file, errorCode, errorMsg, errorString) {
     console.log('The file ' + file.name + ' could not be uploaded: ' + errorString + errorCode + errorMsg);
 }
 EOF
         ),
-        'onUploadSuccess' => new JsExpression(<<<EOF
+        'onUploadComplete' => new JsExpression(<<<EOF
 function(file, data, response) {
     data = JSON.parse(data);
     if (data.error) {
@@ -28,6 +28,7 @@ function(file, data, response) {
         console.log(data);
         //$("#brand-logo").val(data.fileUrl);
         //$("#img").attr("src",data.fileUrl);
+        //将上传成功的图片显示到列表里面
         var html='<tr data-id="'+data.id+'" id="gallery_'+data.id+'">';
         html += '<td><img src="'+data.fileUrl+'" /></td>';
         html += '<td><button type="button" class="btn btn-danger del_btn">删除</button></td>';
@@ -43,8 +44,8 @@ EOF
 ?>
     <table class="table">
         <tr>
-            <th>图片</th>
-            <th>操作</th>
+            <th>更多图片图</th>
+            <th>骚操作</th>
         </tr>
         <?php foreach($goods->galleries as $gallery):?>
             <tr id="gallery_<?=$gallery->id?>" data-id="<?=$gallery->id?>">

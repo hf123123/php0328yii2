@@ -26,6 +26,7 @@ echo \yii\bootstrap\Html::submitButton('<span class="glyphicon glyphicon-search"
         <th>库存</th>
         <th>是否在售</th>
         <th>状态</th>
+        <th>排序</th>
         <th>添加时间</th>
 
         <th>操作</th>
@@ -37,11 +38,13 @@ echo \yii\bootstrap\Html::submitButton('<span class="glyphicon glyphicon-search"
             <td><?=$model->sn?></td>
             <td><?=\yii\bootstrap\Html::img($model->logo,['height'=>50])?></td>
 
+            <td><?=$model->brand_id?></td>
             <td><?=$model->shop_price?></td>
             <td><?=$model->stock?></td>
             <td><?=$model->is_on_sale=1?'上架':'下架';?></td>
             <td><?=$model->status=1?'正常':'回收';?></td>
 
+            <td><?=$model->sort?></td>
             <td><?=date('Y-m-d H:i:s',$model->create_time)?></td>
 
             <td>
