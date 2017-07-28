@@ -72,9 +72,9 @@ class ArticleController extends \yii\web\Controller
 
     //删除
     public function actionDelete($id){
-        $model=Manage::findOne($id);
+        $model=Article::findOne($id);
         $model->delete();
-        return $this->redirect(['admin/index']);
+        \Yii::$app->session->setFlash('success','删除成功');
+        return $this->redirect(['article/index']);
     }
-
 }

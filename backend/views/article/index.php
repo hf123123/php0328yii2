@@ -16,7 +16,8 @@
             <td><?=$model->intro?></td>
 
             <td><?=$model->sort?></td>
-            <td><?=\backend\models\Article::getstatusOption($model->status)?></td>
+            <td><?=\backend\models\Manage::statusOption($model->status)?></td>
+
 
             <td><?=\yii\bootstrap\Html::a('删除',['article/delete','id'=>$model->id],['class'=>'btn btn-danger'])?>
                 <?=\yii\bootstrap\Html::a('修改',['article/edit','id'=>$model->id],['class'=>'btn btn-info'])?></td>

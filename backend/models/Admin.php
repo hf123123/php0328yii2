@@ -106,19 +106,7 @@ class Admin extends \yii\db\ActiveRecord implements IdentityInterface
         return parent::beforeSave($insert);
     }
 
-    public function afterSave($insert, $changedAttributes)
-    {
-        //给用户关联权限
-        if($this->roles){
-            $authManager = Yii::$app->authManager;
-            $authManager->revokeAll($this->id);
-            foreach ($this->roles as $roleName){
-                $role = $authManager->getRole($roleName);
-                if($role) $authManager->assign($role,$this->id);
-            }
-        }
-        parent::afterSave($insert, $changedAttributes);
-    }
+
 
 
     /**

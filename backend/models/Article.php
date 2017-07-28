@@ -49,12 +49,25 @@ class Article extends \yii\db\ActiveRecord
         ];
     }
 
-    public static function getstatusOption($i){
+    public static function statusOption($i){
 
-        $model=[
+        $options=[
             -1=>'删除',0=>'隐藏',1=>'正常'
         ];
-        return $model[$i];
+        return $options[$i];
+    }
+    public static function getstatusOptions($hidden_del=true){
+
+
+        $options=[
+            -1=>'删除',0=>'隐藏',1=>'正常'
+        ];
+        if($hidden_del){
+            unset($options['-1']);
+
+        }
+        return $options;
+
     }
 
 }
