@@ -1,6 +1,8 @@
 <?php
 namespace frontend\models;
 use yii\base\Model;
+use yii\web\IdentityInterface;
+
 class LoginForm extends Model
 {
     public $username;
@@ -21,25 +23,33 @@ class LoginForm extends Model
             'username'=>'用户名',
             'password_hash'=>'密码',
             'code'=>'验证码',
-            'remember'=>'保存登录信息',
+            'remember'=>'保存登录信息'
         ];
     }
-    public function login()
-    {
+    //用户登录
+    public function login(){
+        //根据用户名查找用户
         $member = Member::findOne(['username'=>$this->username]);
         if($member){
-            if(\Yii::$app->security->validatePassword($this->password,$member->password_hash)){
-                \Yii::$app->user->login($member,$this->remember?7*24*3600:0);
-                //更新最后登录时间和最后登录ip
-                //ip2long() 将ip地址转换成整数    long2ip() 将整数转换成ip地址
-                Member::updateAll(['last_login_time'=>time(),'last_login_ip'=>ip2long(\Yii::$app->request->userIP)],['id'=>$member->id]);
+            //验证密码
+            if(\Yii::$app->security->validatePassword($this->password_hash,$member->password_hash)){
+                //登录
+                $member->last_login_ip=\Yii::$app->request->userIP;
+                $member->last_login_time=time();
+                $member->save();
+                //自动登录
+                $duration = $this->remember?7*24*3600:0;
+                \Yii::$app->user->login($member,$duration);
                 return true;
             }else{
-                $this->addError('password_hash','密码错误');
+                $this->addError('password_hash','密码不正确');
             }
         }else{
-            $this->addError('username','用户不存在');
+            $this->addError('username','用户名不存在');
         }
+
         return false;
     }
+
 }
+

@@ -44,6 +44,17 @@ return [
             ],
         ],
 
+        /*JNbVliyKFLJvOppxjJml4gxgBLYwFy
+死飞固齿馆
+SMS_80125056*/
+        'sms'=>[
+            'class'=>\frontend\components\AliyunSms::className(),
+            'accessKeyId'=>'LTAIKenT4Y3IqTlk',
+            'accessKeySecret'=>'JNbVliyKFLJvOppxjJml4gxgBLYwFy',
+            'signName'=>'死飞固齿馆',
+            'templateCode'=>'SMS_80125056'
+        ]
+
     ],
     'params' => $params,
 ];

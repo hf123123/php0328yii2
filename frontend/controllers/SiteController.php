@@ -1,6 +1,8 @@
 <?php
 namespace frontend\controllers;
 
+use backend\models\Goods;
+use backend\models\GoodsCategory;
 use Yii;
 use yii\base\InvalidParamException;
 use yii\web\BadRequestHttpException;
@@ -210,4 +212,28 @@ class SiteController extends Controller
             'model' => $model,
         ]);
     }
+
+    //商品列表页
+    public function actionList($category_id)
+    {
+        //判断是几级分类
+        $cate = GoodsCategory::findOne(['id'=>$category_id]);
+        if($cate->depth == 2){
+            $models = Goods::find()->where(['goods_category_id'=>$category_id])->asArray()->all();
+        }else{
+            $ids = $cate->leaves()->asArray()->column();
+            //var_dump($ids);exit;
+            $models = Goods::find()->where(['in','goods_category_id',$ids])->asArray()->all();
+        }
+        var_dump($models);
+
+    }
+    //商品详情页
+    public function actionGoods($id){
+        $this->layout = false;
+        $goods = Goods::findOne(['id'=>$id]);
+        return $this->render('goods',['goods'=>$goods]);
+    }
+
+
 }

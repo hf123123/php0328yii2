@@ -77,9 +77,11 @@
                     <p></p>
                 </li>
                 <li id="li_smsCode">
-                    <label for="">验证码：</label>
+                    <label for="">手机验证码：</label>
                     <input type="text" class="txt" value="" placeholder="请输入短信验证码" name="Member[smsCode]" disabled="disabled" id="captcha"/> <input type="button" onclick="bindPhoneNum(this)" id="get_captcha" value="获取验证码" style="height: 25px;padding:3px 8px"/>
                     <p></p>
+               <!--     $button =  Html::button('发送短信验证码',['id'=>'send_sms_button']);
+                    echo $form->field($model,'smsCode',['options'=>['class'=>'checkcode'],'template'=>"{label}\n{input}$button\n{hint}\n{error}"])->textInput(['class'=>'txt']);-->
                 </li>
                 <li class="checkcode" id="li_code">
                     <?=$form->field($model,'code')->widget(\yii\captcha\Captcha::className())?>
@@ -143,10 +145,21 @@
 <script type="text/javascript" src="<?=Yii::getAlias('@web')?>/js/jquery-1.8.3.min.js"></script>
 <script type="text/javascript">
     function bindPhoneNum(){
+        //得到电话号码
+        var telnum =$("#tel").val();
+        if(!telnum){
+            alert('电话号码不能为空!');
+            return false;
+        }
+//
+        $.getJSON('/user/sendsms',{"telnum":telnum},function(data){
+            console.log(data);
+        })
         //启用输入框
         $('#captcha').prop('disabled',false);
 
-        var time=30;
+
+        var time=60;
         var interval = setInterval(function(){
             time--;
             if(time<=0){
@@ -211,6 +224,7 @@
             //console.log(json.url);
         });
     });
+
 </script>
 </body>
 </html>

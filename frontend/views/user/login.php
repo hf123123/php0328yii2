@@ -48,39 +48,18 @@
     </div>
     <div class="login_bd">
         <div class="login_form fl">
-            <form action="" method="post">
-                <ul>
-                    <li>
-                        <label for="">用户名：</label>
-                        <input type="text" class="txt" name="username" />
-                    </li>
-                    <li>
-                        <label for="">密码：</label>
-                        <input type="password" class="txt" name="password" />
-                        <a href="">忘记密码?</a>
-                    </li>
-<!--                    <li class="checkcode">-->
-<!--                        <label for="">验证码：</label>-->
-<!--                        <input type="text"  name="checkcode" />-->
-<!--                        <img src="--><?//=Yii::getAlias('@web')?><!--/images/checkcode1.jpg" alt="" />-->
-<!--                        <span>看不清？<a href="">换一张</a></span>-->
-<!--                    </li>-->
-                    <li class="checkcode" id="li_code">
-                        <label for="">验证码：</label>
-                        <input type="text"  name="code" />
-                        <img src="/site/captcha" alt="点击更换图片" id="img-code" />
-                        <span>看不清？<a href="">换一张</a></span>
-                    </li>
-                    <li>
-                        <label for="">&nbsp;</label>
-                        <input type="checkbox" class="chb"  /> 保存登录信息
-                    </li>
-                    <li>
-                        <label for="">&nbsp;</label>
-                        <input type="submit" value="" class="login_btn" />
-                    </li>
-                </ul>
-            </form>
+            <?php $from = \yii\widgets\ActiveForm::begin(['fieldConfig'=>['options'=>['tag'=>'li',],'errorOptions'=>['tag'=>'p']]]);?>
+            <ul>
+                <?=$from->field($model,'username')->textInput(['class'=>'txt']);?>
+                <?=$from->field($model,'password_hash')->passwordInput(['class'=>'txt']);?>
+                <?=$from->field($model,'code',['options'=>['class'=>'checkcode']])->widget(\yii\captcha\Captcha::className(),['template'=>'{input}{image}']);?>
+                <?=$from->field($model,'remember',['template'=>'<label for="">&nbsp;</label>{input}保存登录信息{error}'])->checkbox(['class'=>'chb','label'=>null]);?>
+                <li>
+                    <label for="">&nbsp;</label>
+                    <input type="submit" value="" class="login_btn" />
+                </li>
+            </ul>
+            <?php \yii\widgets\ActiveForm::end();?>
 
             <div class="coagent mt15">
                 <dl>
@@ -100,7 +79,7 @@
             <h3>还不是商城用户</h3>
             <p>现在免费注册成为商城用户，便能立刻享受便宜又放心的购物乐趣，心动不如行动，赶紧加入吧!</p>
 
-            <a href="<?=Yii::getAlias('@web')?>/regist.html" class="reg_btn">免费注册 >></a>
+            <a href="regist.html" class="reg_btn">免费注册 >></a>
         </div>
 
     </div>
