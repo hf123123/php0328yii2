@@ -74,29 +74,31 @@ class GoodsCategoryController extends \yii\web\Controller
     }*/
 
     //添加
-    public function actionAdd(){
-        $model=new GoodsCategory();
-        if($model->load(\Yii::$app->request->post())&& $model->validate()) {
-
+    public function actionAdd()
+    {
+        $model = new GoodsCategory(['parent_id' => 0]);
+        if ($model->load(\Yii::$app->request->post()) && $model->validate()) {
+            //$model->save();
             //判断是否是添加一级分类
-            if($model->parent_id){
+            if ($model->parent_id) {
                 //非一级分类
-                $category = GoodsCategory::findOne(['id'=>$model->parent_id]);
-                if($category){
-                    $model->prependTo($category);
-                }else{
-                    throw new HttpException(404,'上级分类不存在');
+
+                $category = GoodsCategory::findOne(['id' => $model->parent_id]);
+                if ($category) {
+                    $model->appendTo($category);
+                } else {
+                    throw new HttpException(404, '上级分类不存在');
                 }
-            }else{
+
+            } else {
                 //一级分类
                 $model->makeRoot();
             }
-            \Yii::$app->session->setFlash('success','分类添加成功');
+            \Yii::$app->session->setFlash('success', '分类添加成功');
             return $this->redirect(['index']);
+
         }
-        //获取所有分类数据
-        $categories=GoodsCategory::find()->select(['id','parent_id','name'])->asArray()->all();
-        return $this->render('add',['model'=>$model,'categories'=>$categories]);
+        return $this->render('add2',['model'=>$model]);
     }
     //测试嵌套集合插件的用法
     public function actionTest()

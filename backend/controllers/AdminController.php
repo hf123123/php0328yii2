@@ -124,12 +124,14 @@ class AdminController extends Controller
         return $this->redirect(['admin/index']);
     }
     //登录
-    public function actionLogin()
-    {
+//用户登录
+    public function actionLogin(){
+        if(!\Yii::$app->user->isGuest){
+            return $this->redirect(['admin/index']);
+        }
         $model = new LoginForm();
         if($model->load(\Yii::$app->request->post()) && $model->validate()){
             if($model->login()){
-                \Yii::$app->session->setFlash('success','登录成功');
                 return $this->redirect(['admin/index']);
             }
         }
@@ -137,12 +139,12 @@ class AdminController extends Controller
     }
 
 
-
     //显示
     public function actionIndex(){
        $models=Admin::find()->all();
        return $this ->render('index',['models'=>$models]);
     }
+
 //权限设置,与角色关联
     public function actionRbac($id)
     {

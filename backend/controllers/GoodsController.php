@@ -1,42 +1,29 @@
 <?php
-
 namespace backend\controllers;
-
-
 use backend\models\Goods;
 use backend\models\GoodsCategory;
 use backend\models\GoodsDayCount;
 use backend\models\GoodsGallery;
 use backend\models\GoodsIntro;
 use backend\models\GoodsSearchForm;
-
 use yii\data\Pagination;
 use flyok666\uploadifive\UploadAction;
 use yii\web\NotFoundHttpException;
-
-
 class GoodsController extends \yii\web\Controller
 {
     public function actionIndex()
     {
         $model = new GoodsSearchForm();
-
         $query = Goods::find();
-
         //接收表单提交的查询参数
         $model->search($query);
-
-
         //商品名称含有"耳机"的  name like "%耳机%"
         //$query = Goods::find()->where(['like','name','耳机']);
         $pager = new Pagination([
             'totalCount'=>$query->count(),
             'pageSize'=>5
         ]);
-
         $models = $query->limit($pager->limit)->offset($pager->offset)->all();
-
-
         return $this->render('index',['models'=>$models,'pager'=>$pager,'model'=>$model]);
     }
     /*
@@ -47,9 +34,7 @@ class GoodsController extends \yii\web\Controller
         $model = new Goods();
         $introModel = new GoodsIntro();
         if($model->load(\Yii::$app->request->post()) && $introModel->load(\Yii::$app->request->post())){
-
             if($model->validate() && $introModel->validate()){
-
                 /*
                  * 处理sn
                  * 自动生成sn,规则为年月日+今天的第几个商品,比如201704010001
@@ -68,18 +53,15 @@ class GoodsController extends \yii\web\Controller
                 //substr('000'.($goodsCount->count+1),-4,4);
                 //str_pad($goodsCount->count+1,4,'0',STR_PAD_LEFT);
                 $model->sn = date('Ymd').sprintf("%04d",$goodsCount->count+1);
-
                 $model->save();
                 $introModel->goods_id = $model->id;
                 $introModel->save();
                 $goodsCount->count++;
                 $goodsCount->save();
-
                 \Yii::$app->session->setFlash('success','商品添加成功,请添加商品相册');
                 return $this->redirect(['goods/gallery','id'=>$model->id]);
             }
         }
-
         //获取所有分类数据
         $categories=GoodsCategory::find()->select(['id','parent_id','name'])->asArray()->all();
         return $this->render('add',['model'=>$model,'introModel'=>$introModel,'categories'=>$categories]);
@@ -91,14 +73,12 @@ class GoodsController extends \yii\web\Controller
         $model = Goods::findOne(['id'=>$id]);
         $introModel = $model->goodsIntro;
         if($model->load(\Yii::$app->request->post()) && $introModel->load(\Yii::$app->request->post())) {
-
             if ($model->validate() && $introModel->validate()) {
                 $model->save();$introModel->save();
                 \Yii::$app->session->setFlash('success','商品修改成功');
                 return $this->redirect(['goods/index']);
             }
         }
-
         //获取所有分类数据
         $categories=GoodsCategory::find()->select(['id','parent_id','name'])->asArray()->all();
         return $this->render('add',['model'=>$model,'introModel'=>$introModel,'categories'=>$categories]);
@@ -112,12 +92,8 @@ class GoodsController extends \yii\web\Controller
         if($goods == null){
             throw new NotFoundHttpException('商品不存在');
         }
-
-
         return $this->render('gallery',['goods'=>$goods]);
-
     }
-
     /*
      * AJAX删除图片
      */
@@ -129,10 +105,7 @@ class GoodsController extends \yii\web\Controller
         }else{
             return 'fail';
         }
-
     }
-
-
     public function actions() {
         return [
             'upload' => [
@@ -190,19 +163,11 @@ class GoodsController extends \yii\web\Controller
                     }else{
                         $action->output['fileUrl'] = $action->getWebUrl();//输出文件的相对路径
                     }
-
-
-
 //                    $action->getFilename(); // "image/yyyymmddtimerand.jpg"
 //                    $action->getWebUrl(); //  "baseUrl + filename, /upload/image/yyyymmddtimerand.jpg"
 //                    $action->getSavePath(); // "/var/www/htdocs/upload/image/yyyymmddtimerand.jpg"
-
                 },
             ],
         ];
     }
-
-
-
-
 }

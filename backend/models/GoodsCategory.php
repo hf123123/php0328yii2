@@ -83,4 +83,22 @@ class GoodsCategory extends ActiveRecord
     {
         return new GoodsCategoryQuery(get_called_class());
     }
+
+    public static function getZtreeNodes()
+    {
+        $nodes =  self::find()->select(['id','parent_id','name'])->asArray()->all();
+        $nodes[] = ['id'=>0,'parent_id'=>0,'name'=>'顶级分类','open'=>1];
+        return $nodes;
+    }
+
+    //异常提示信息
+    public static function exceptionInfo($msg)
+    {
+        $infos = [
+            'Can not move a node when the target node is same.'=>'不能修改到自己节点下面',
+            'Can not move a node when the target node is child.'=>'不能修改到自己的子孙节点下面',
+        ];
+        return isset($infos[$msg])?$infos[$msg]:$msg;
+    }
+
 }

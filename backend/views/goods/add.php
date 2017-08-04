@@ -1,6 +1,4 @@
 <?php
-
-
 use yii\web\JsExpression;
 $form=\yii\bootstrap\ActiveForm::begin();
 echo  $form->field($model,'name');
@@ -40,7 +38,6 @@ EOF
         ),
     ]
 ]);
-
 echo $form->field($model,'goods_category_id')->hiddenInput();
 echo '<div>
     <ul id="treeDemo" class="ztree"></ul>
@@ -51,18 +48,11 @@ echo  $form->field($model,'shop_price');
 echo  $form->field($model,'stock');
 //echo  $form->field($model,'is_on_sale');
 echo  $form->field($model,'is_on_sale',['inline'=>true])->radioList([1=>'上架',0=>'下架']);
-echo  $form->field($model,'name');
-
 echo  $form->field($model,'status',['inline'=>true])->radioList(\backend\models\Brand::getstatusOptions());
 echo  $form->field($model,'sort')->fileInput(['type'=>'number']);
 echo $form->field($introModel,'content')->widget('kucha\ueditor\UEditor',[]);
-
 echo \yii\bootstrap\Html::submitButton('确定',['class'=>'btn btn-info']);
 \yii\bootstrap\ActiveForm::end();
-
-
-
-
 //调用视图的方法加载静态资源
 //加载css文件
 $this->registerCssFile('@web/zTree/css/zTreeStyle/zTreeStyle.css');
@@ -110,7 +100,5 @@ $this->registerJs(new \yii\web\JsExpression(
         zTreeObj.selectNode(node);
         //触发选中事件
         
-
 JS
-
 ));
