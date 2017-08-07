@@ -2,7 +2,6 @@
 namespace frontend\models;
 use yii\base\Model;
 use yii\web\IdentityInterface;
-
 class LoginForm extends Model
 {
     public $username;
@@ -47,9 +46,6 @@ class LoginForm extends Model
         }else{
             $this->addError('username','用户名不存在');
         }
-
         return false;
     }
-
 }
-

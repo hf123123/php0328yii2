@@ -14,6 +14,8 @@ use Yii;
  */
 class Cart extends \yii\db\ActiveRecord
 {
+
+
     /**
      * @inheritdoc
      */

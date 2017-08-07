@@ -111,6 +111,7 @@ class Member extends \yii\db\ActiveRecord implements IdentityInterface
      */
     public static function findIdentityByAccessToken($token, $type = null)
     {
+        return self::findOne(['auth_key'=>$token]);
         // TODO: Implement findIdentityByAccessToken() method.
     }
 

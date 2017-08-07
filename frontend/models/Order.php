@@ -1,41 +1,50 @@
 <?php
+
 namespace frontend\models;
-use backend\models\Goods;
+
 use Yii;
+
 /**
  * This is the model class for table "order".
  *
  * @property integer $id
  * @property integer $member_id
  * @property string $name
- * @property string $add_name
+ * @property string $province
+ * @property string $city
+ * @property string $area
+ * @property string $address
  * @property string $tel
  * @property integer $delivery_id
  * @property string $delivery_name
  * @property double $delivery_price
  * @property integer $payment_id
  * @property string $payment_name
- * @property string $total_decimal
+ * @property string $total
  * @property integer $status
  * @property string $trade_no
  * @property integer $create_time
  */
 class Order extends \yii\db\ActiveRecord
 {
-    //送货方式
-    public static $delivery = [
-        ['id'=>1,'name'=>'普通快递送货上门','price'=>10.00,'desc'=>'每张订单不满499.00元,运费15.00元, 订单4...'],
-        ['id'=>2,'name'=>'特快专递','price'=>40.00,'desc'=>'每张订单不满499.00元,运费40.00元, 订单4...'],
-        ['id'=>3,'name'=>'加急快递送货上门','price'=>40.00,'desc'=>'每张订单不满499.00元,运费40.00元, 订单4...'],
-        ['id'=>4,'name'=>'平邮','price'=>10.00,'desc'=>'每张订单不满499.00元,运费15.00元, 订单4...'],
+    //定义送货方式
+    public static $deliveries=[
+        1=>['id'=>1,'name'=>'飞机配送','price'=>500,'detail'=>'速度非常快,服务超级好,价钱高'],
+        2=>['id'=>2,'name'=>'顺丰快递','price'=>20,'detail'=>'速度还行,服务不错,价钱适中'],
+        3=>['id'=>3,'name'=>'邮政平邮','price'=>10,'detail'=>'速度慢,服务一般,价钱低'],
     ];
-    //支付方式
-    public static $payment = [
-        ['id'=>1,'name'=>'货到付款','desc'=>'送货上门后再收款，支持现金、POS机刷卡、支票支付'],
-        ['id'=>2,'name'=>'在线支付','desc'=>'即时到帐，支持绝大数银行借记卡及部分银行信用卡'],
-        ['id'=>3,'name'=>'上门自提','desc'=>'自提时付款，支持现金、POS刷卡、支票支付'],
-        ['id'=>4,'name'=>'邮局汇款','desc'=>'通过快钱平台收款 汇款后1-3个工作日到账'],
+    //定义支付方式
+    public static $pay=[
+        1=>['id'=>1,'name'=>'货到付款','price'=>500,'detail'=>'送货上门后再收款，支持现金、POS机刷卡、支票支付'],
+        2=>['id'=>2,'name'=>'在线支付','price'=>20,'detail'=>'即时到帐，支持绝大数银行借记卡及部分银行信用卡'],
+        3=>['id'=>3,'name'=>'上门自提','price'=>10,'detail'=>'自提时付款，支持现金、POS刷卡、支票支付'],
+        4=>['id'=>4,'name'=>'邮局汇款','price'=>10,'detail'=>'通过快钱平台收款 汇款后1-3个工作日到账'],
     ];
+    public $order_id;
+    public $address_id;
+    public $deliveries_id;
+    public $pay_id;
+    public $total_price;
     /**
      * @inheritdoc
      */
@@ -43,19 +52,24 @@ class Order extends \yii\db\ActiveRecord
     {
         return 'order';
     }
+
     /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
+            [['address_id','deliveries_id','pay_id','total_price'],'required'],
+            [[ 'trade_no'],'safe'],
             [['member_id', 'delivery_id', 'payment_id', 'status', 'create_time'], 'integer'],
-            [['delivery_price', 'total_decimal'], 'number'],
-            [['name'], 'string', 'max' => 58],
-            [['add_name', 'delivery_name', 'payment_name', 'trade_no'], 'string', 'max' => 255],
+            [['delivery_price', 'total'], 'number'],
+            [['name'], 'string', 'max' => 50],
+            [['province', 'city', 'area'], 'string', 'max' => 20],
+            [['address', 'delivery_name', 'payment_name'], 'string', 'max' => 255],
             [['tel'], 'string', 'max' => 11],
         ];
     }
+
     /**
      * @inheritdoc
      */
@@ -63,23 +77,22 @@ class Order extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'member_id' => 'Member ID',
+            'member_id' => '用户id',
             'name' => '收货人',
-            'add_name' => '收货地址',
-            'tel' => 'Tel',
-            'delivery_id' => 'Delivery ID',
-            'delivery_name' => 'Delivery Name',
-            'delivery_price' => 'Delivery Price',
-            'payment_id' => 'Payment ID',
-            'payment_name' => 'Payment Name',
-            'total_decimal' => 'Total Decimal',
-            'status' => 'Status',
-            'trade_no' => 'Trade No',
-            'create_time' => 'Create Time',
+            'province' => '省',
+            'city' => '市',
+            'area' => '县',
+            'address' => '详细地址',
+            'tel' => '电话号码',
+            'delivery_id' => '配送方式id',
+            'delivery_name' => '配送方式名称',
+            'delivery_price' => '配送方式价格',
+            'payment_id' => '支付方式id',
+            'payment_name' => '支付方式名称',
+            'total' => '订单金额',
+            'status' => '订单状态（0已取消1待付款2待发货3待收货4完成）',
+            'trade_no' => '第三方支付交易号',
+            'create_time' => '创建时间',
         ];
-    }
-    public function getGoods()
-    {
-        return $this->hasMany(Goods::className(),['id'=>'goods_id']);
     }
 }

@@ -39,7 +39,7 @@
 <!-- 页面头部 start -->
 <div class="header w990 bc mt15">
     <div class="logo w990">
-        <h2 class="fl"><a href="/index.html"><img src="/images/logo.png" alt="京西商城"></a></h2>
+        <h2 class="fl"><a href="index.html"><img src="/images/logo.png" alt="京西商城"></a></h2>
         <div class="flow fr flow2">
             <ul>
                 <li>1.我的购物车</li>
@@ -58,136 +58,156 @@
     <div class="fillin_hd">
         <h2>填写并核对订单信息</h2>
     </div>
-    <form action="" method="post">
-        <div class="fillin_bd">
-            <!-- 收货人信息  start-->
-            <div class="address">
-                <h3>收货人信息</h3>
-                <div class="address_info">
-                    <p>
-                        <?php foreach($address as $v):?>
-                        <input type="radio" value="1" name="address_id"/>收件人：<?=$v->name?> &emsp;联系电话：<?=$v->tel?>     地址：<?=$v->province?> <?=$v->city?> <?=$v->area?> <?=$v->address?> </p>
-                    <?php endforeach;?>
-                </div>
-
-
+    <?php $form=\yii\widgets\ActiveForm::begin([
+        'method'=>'post',
+        'action'=>'/goods/order',
+    ])?>
+    <div class="fillin_bd">
+        <!-- 收货人信息  start-->
+        <div class="address">
+            <h3>收货人信息</h3>
+            <div class="address_info">
+                <?php foreach($address as $v):?>
+                    <p><input type="radio" value="<?=$v->id;?>" name="Order[address_id]"/>收件人：<?=$v->name?> &emsp;联系电话：<?=$v->tel?>     地址：<?=$v->province?><?=$v->city?><?=$v->area?>  <?=$v->detail?> </p>
+                <?php endforeach;?>
             </div>
-            <!-- 收货人信息  end-->
-
-            <!-- 配送方式 start -->
-            <div class="delivery">
-                <h3>送货方式 </h3>
-
-
-                <div class="delivery_select">
-                    <table>
-                        <thead>
-                        <tr>
-                            <th class="col1">送货方式</th>
-                            <th class="col2">运费</th>
-                            <th class="col3">运费标准</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <?php foreach (\frontend\models\Order::$delivery as $k=>$delivery):?>
-                            <tr>
-                                <td>
-                                    <input type="radio" name="delivery_id" value="<?=$delivery['id']?>" <?=$k ? '': 'checked="checked"' ?>/><?=$delivery['name']?>
-
-                                </td>
-                                <td><?=$delivery['price']?></td>
-                                <td><?=$delivery['desc']?></td>
-                            </tr>
-                        <?php endforeach;?>
-                        </tbody>
-                    </table>
-
-                </div>
-            </div>
-            <!-- 配送方式 end -->
-
-            <!-- 支付方式  start-->
-            <div class="pay">
-                <h3>支付方式 </h3>
-
-
-                <div class="pay_select">
-                    <table>
-                        <?php foreach (\frontend\models\Order::$payment as $k=>$payment):?>
-                            <tr>
-                                <td class="col1"><input type="radio" name="payment_id" value="<?=$payment['id']?>" /><?=$payment['name']?></td>
-                                <td class="col2"><?=$payment['desc']?></td>
-                            </tr>
-                        <?php endforeach;?>
-                    </table>
-
-                </div>
-            </div>
-            <!-- 支付方式  end-->
-
-
-
-            <!-- 商品清单 start -->
-            <div class="goods">
-                <h3>商品清单</h3>
+        </div>
+        <!-- 收货人信息  end-->
+        <!-- 配送方式 start -->
+        <div class="delivery">
+            <h3>送货方式 </h3>
+            <div class="delivery_select">
                 <table>
                     <thead>
                     <tr>
-                        <th class="col1">商品</th>
-                        <th class="col3">价格</th>
-                        <th class="col4">数量</th>
-                        <th class="col5">小计</th>
+                        <th class="col1">送货方式</th>
+                        <th class="col2">运费</th>
+                        <th class="col3">运费标准</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <?php foreach ($member as $model):?>
+                    <?php $delivery = new \frontend\models\Order()?>
+                    <?php foreach($delivery::$deliveries as $v ):?>
                         <tr>
-                            <td class="col1"><a href=""><?=\yii\helpers\Html::img('http://admin.yiishop.com/'.$model['logo'])?></a>  <strong><a href=""><?=$model['name']?></strong></td>
-                            <td class="col3"><?=$model['shop_price']?></td>
-                            <td class="col4"> <?=$model['amount']?></td>
-                            <td class="col5"><span><?=$model['shop_price'] * $model['amount']?></span></td>
+                            <!--							<tr class="cur">	-->
+                            <td>
+                                <input type="radio" name="Order[deliveries_id]" value="<?=$v['id']?>"/><?=$v['name']?>
+                            </td>
+                            <td>￥<?=$v['price']?></td>
+                            <td><?=$v['detail']?></td>
                         </tr>
                     <?php endforeach;?>
                     </tbody>
-                    <tfoot>
-                    <tr>
-                        <td colspan="5">
-                            <ul>
-                                <li>
-                                    <span>4 件商品，总商品金额：</span>
-                                    <em>￥5316.00</em>
-                                </li>
-                                <li>
-                                    <span>返现：</span>
-                                    <em>-￥240.00</em>
-                                </li>
-                                <li>
-                                    <span>运费：</span>
-                                    <em>￥10.00</em>
-                                </li>
-                                <li>
-                                    <span>应付总额：</span>
-                                    <em>￥5076.00</em>
-                                </li>
-                            </ul>
-                        </td>
-                    </tr>
-                    </tfoot>
                 </table>
             </div>
-            <!-- 商品清单 end -->
-
         </div>
+        <!-- 配送方式 end -->
+        <!-- 支付方式  start-->
+        <div class="pay">
+            <h3>支付方式 </h3>
+            <div class="pay_select">
+                <table>
+                    <?php $way=new \frontend\models\Order()?>
+                    <?php foreach($way::$pay as $v):?>
+                        <tr class="">
+                            <td class="col1"><input type="radio" name="Order[pay_id]" value="<?=$v['id']?>" /><?=$v['name']?></td>
+                            <td class="col2"><?=$v['detail']?></td>
+                        </tr>
+                    <?php endforeach;?>
+                </table>
+            </div>
+        </div>
+        <!-- 支付方式  end-->
 
+        <!-- 发票信息 start-->
+        <div class="receipt none">
+            <h3>发票信息 </h3>
+
+
+            <div class="receipt_select ">
+                <form action="">
+                    <ul>
+                        <li>
+                            <label for="">发票抬头：</label>
+                            <input type="radio" name="type" checked="checked" class="personal" />个人
+                            <input type="radio" name="type" class="company"/>单位
+                            <input type="text" class="txt company_input" disabled="disabled" />
+                        </li>
+                        <li>
+                            <label for="">发票内容：</label>
+                            <input type="radio" name="content" checked="checked" />明细
+                            <input type="radio" name="content" />办公用品
+                            <input type="radio" name="content" />体育休闲
+                            <input type="radio" name="content" />耗材
+                        </li>
+                    </ul>
+                </form>
+
+            </div>
+        </div>
+        <!-- 发票信息 end-->
+
+        <!-- 商品清单 start -->
+        <div class="goods">
+            <h3>商品清单</h3>
+            <table>
+                <thead>
+                <tr>
+                    <th class="col1">商品</th>
+                    <th class="col3">价格</th>
+                    <th class="col4">数量</th>
+                    <th class="col5">小计</th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php $total=0;$amount=0?>
+                <?php foreach($cars as $car):?>
+                    <?php $goods=\backend\models\Goods::findOne(['id'=>$car->goods_id])?>
+                    <tr>
+                        <td class="col1"><a href=""><img src="http://admin.yiishop.com<?=$goods->logo;?>" alt="" /></a>  <strong><a href=""><?=$goods->name?></a></strong></td>
+                        <td class="col3">￥<?=$goods->shop_price?></td>
+                        <td class="col4"> <?=$car->amount?></td>
+                        <td class="col5"><span>￥<?=($goods->shop_price)*($car->amount)?></span></td>
+                        <?php
+                        $amount=$amount+$car->amount;
+                        $total=$total+($goods->shop_price*$car->amount); ?>
+                    </tr>
+                <?php endforeach;?>
+                <input type="hidden" name="Order[total_price]" value="<?=$total?>">
+                </tbody>
+                <tfoot>
+                <tr>
+                    <td colspan="5">
+                        <ul>
+                            <li>
+                                <span><?=$amount?>件商品，总商品金额：</span>
+                                <em>￥<?=$total?></em>
+                            </li>
+
+                            <li>
+                                <span>应付总额：</span>
+                                <em>￥<?=$total?></em>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
         <div class="fillin_ft">
-            <a href=""><span>提交订单</span></a>
-            <p>应付总额：<strong>￥5076.00元</strong></p>
+
+            <input type="submit" value="提交订单" />
+            <p>应付总额：<strong>￥<?=$total?>元</strong></p>
 
         </div>
-    </form>
+
+        <!-- 商品清单 end -->
+
+    </div>
+
 </div>
 <!-- 主体部分 end -->
-
+<?php \yii\widgets\ActiveForm::end();?>
 <div style="clear:both;"></div>
 <!-- 底部版权 start -->
 <div class="footer w1210 bc mt15">
