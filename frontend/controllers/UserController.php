@@ -377,7 +377,6 @@ class UserController extends \yii\web\Controller
                 'expire'=>7*24*3600+time(),//设置过期时间
             ]);
             $cookies->add($cookie);//将数据保存到cookie
-
         }else{//已经登录
             //var_dump($id);exit;
             $member_id=\Yii::$app->user->identity->id;

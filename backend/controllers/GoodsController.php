@@ -33,8 +33,12 @@ class GoodsController extends \yii\web\Controller
     {
         $model = new Goods();
         $introModel = new GoodsIntro();
+        //var_dump($_POST);exit;
         if($model->load(\Yii::$app->request->post()) && $introModel->load(\Yii::$app->request->post())){
+            //var_dump($introModel);exit;
             if($model->validate() && $introModel->validate()){
+                //var_dump($model);exit;
+                //var_dump(111);exit;
                 /*
                  * 处理sn
                  * 自动生成sn,规则为年月日+今天的第几个商品,比如201704010001
@@ -46,9 +50,9 @@ class GoodsController extends \yii\web\Controller
                     $goodsCount = new GoodsDayCount();
                     $goodsCount->day = $day;
                     $goodsCount->count = 0;
+                    //var_dump($goodsCount);exit;
                     $goodsCount->save();
                 }
-                //$goodsCount;
                 //字符串长度补全
                 //substr('000'.($goodsCount->count+1),-4,4);
                 //str_pad($goodsCount->count+1,4,'0',STR_PAD_LEFT);
@@ -61,6 +65,7 @@ class GoodsController extends \yii\web\Controller
                 \Yii::$app->session->setFlash('success','商品添加成功,请添加商品相册');
                 return $this->redirect(['goods/gallery','id'=>$model->id]);
             }
+            //var_dump($model->getErrors());exit;
         }
         //获取所有分类数据
         $categories=GoodsCategory::find()->select(['id','parent_id','name'])->asArray()->all();

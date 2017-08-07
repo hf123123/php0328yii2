@@ -1,5 +1,6 @@
 <?php
 use yii\web\JsExpression;
+
 $form=\yii\bootstrap\ActiveForm::begin();
 echo  $form->field($model,'name');
 echo \yii\bootstrap\Html::img($model->logo?$model->logo:false,['id'=>'img','height'=>50]);
@@ -23,7 +24,6 @@ EOF
         'onUploadComplete' => new JsExpression(<<<EOF
 function(file, data, response) {
     data = JSON.parse(data);
-    //console.log(data);
     if (data.error) {
         console.log(data.msg);
     } else {
